@@ -1,0 +1,5 @@
+ListadoEquiposSeleccionados/ListadoEquiposeleccionado.jsx -> fecha manual descomentar techa automática comentar fecha manual
+
+ListadoEquiposSeleccionados/components/PreventivoModal.jsx -> fecha manual descomentar techa automática comentar fecha manual
+
+ListadoEquipo/components/ListadoModal.jsx -> year manual descomentar fecha automática comentar year manual

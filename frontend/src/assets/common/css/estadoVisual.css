@@ -1,0 +1,58 @@
+.equipo-card {
+  border-left-width: 6px;
+  border-left-style: solid;
+  transition: transform 0.2s ease;
+}
+.card.equipo-card {
+  border-left-width: 6px;
+  border-left-style: solid;
+}
+
+
+.equipo-card:hover {
+  transform: scale(1.02);
+}
+
+.estado-verde {
+  color: #198754;
+}
+
+.estado-rojo {
+  color: #dc3545;
+}
+
+.estado-amarillo {
+  color: #ffc107;
+}
+
+.badge.bg-success {
+  background-color: #198754;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545;
+}
+
+.badge.bg-secondary {
+  background-color: #6c757d;
+}
+
+.border-success {
+  border-left-color: #198754;
+}
+
+.border-danger {
+  border-left-color: #dc3545;
+}
+
+.border-warning {
+  border-left-color: #ffc107;
+}
+.border-secondary {
+  border-left-color: #6c757d;
+}

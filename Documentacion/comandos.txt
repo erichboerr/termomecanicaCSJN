@@ -1,0 +1,13 @@
+
+FRONTEND
+para ejecutar el frontend
+pararce sobre la carpeta frontend (cd frontend)
+ejecutar npm install (para cargar las depencencias)
+ejecutar el comando: npm run dev
+**********************************
+BACKEND
+Para ejecutar el backend
+pararce sobre la carpeta backend (cd backend)
+ejecutar npm install (para cargar las depencencias)
+ejecutar el comando npm run dev
+**********************************

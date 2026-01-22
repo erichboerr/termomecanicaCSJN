@@ -1,0 +1,54 @@
+.equipo-foto {
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.equipo-card {
+  min-height: 350px; /* Ajustá según lo que necesites */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.observaciones {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-clamp: 1; /* para navegadores que lo soporten */
+  max-height: 1.5em; /* 3 líneas × 1.5em */
+  word-break: break-word;
+}
+
+.botones-rol-wrapper {
+  margin-top: auto;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+}
+
+textarea.form-control {
+  resize: vertical;
+  font-size: 0.9rem;
+}
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.info-section,
+.textarea-section,
+.actions-section {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+}

@@ -1,0 +1,35 @@
+# Checklist para levantar backend en Hostinger con PM2
+
+1. Entrar al servidor
+   ssh root@TU_IP_VPS
+
+2. Ir a la carpeta del proyecto
+   cd /root/termomecanicaCSJN-postgeSQL
+
+3. Verificar dependencias
+   node -v
+   npm -v
+   npm install
+
+4. Levantar el backend con PM2
+   pm2 start backend.mjs --name backend --interpreter node
+
+5. Actualizar variables de entorno (si cambiaste .env)
+   pm2 restart backend --update-env
+
+6. Guardar la lista de procesos activos
+   pm2 save
+
+7. Arrancar y habilitar el servicio PM2 en systemd
+   sudo systemctl start pm2-root
+   sudo systemctl enable pm2-root
+
+8. Verificar estado
+   systemctl status pm2-root
+   pm2 list
+
+9. Probar reinicio del VPS
+   sudo reboot
+
+10. Al volver a entrar, confirmar que el backend está online
+    pm2 list

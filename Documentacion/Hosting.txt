@@ -1,0 +1,36 @@
+Dominio principal: hosting61990us-cp16.wordpresstemporal.com
+
+Nameservers:
+ns161.webempresa.eu
+ns162.webempresa.eu
+
+IP: 213.158.84.105
+
++++++++++++++++++++++++++++++++++
+
+HOSTING
+https://www.webempresa.com/areacliente.php
+
+Jcuevas@tekniksrl.com.ar
+Lapaloma3000.
+
+Usuario: hosting61990us
+
+Dominio principal: hosting61990us-cp16.wordpresstemporal.com
+
+Nameservers:
+ns161.webempresa.eu
+ns162.webempresa.eu
+
+IP: 213.158.84.105
+
++++++++++++++++++++++++++++++++++
+
+termomecanicacsjn.com.ar
+
+Panel de Administración
+
+https://termomecanicacsjn.com.ar/wp-admin
+Usuario: hernyadmin
+Contraseña:Lapaloma2000.
+

@@ -1,0 +1,70 @@
+.crear-usuario-wrapper {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+}
+
+.form-box {
+  width: 100%;
+  max-width: 700px;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.03);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.no-wrap {
+  flex-wrap: nowrap;
+}
+
+.form-label {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.form-select,
+.form-control {
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.btn-outline-primary {
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.btn-success {
+  font-size: 0.9rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+}
+
+.text-center h2 {
+  font-size: 1.6rem;
+  color: #2c3e50;
+}
+
+.text-muted {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,95 @@
+/* Base: Estilos para escritorio y pantallas grandes */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* Por encima de otros elementos */
+  backdrop-filter: blur(5px);
+}
+
+.modal-dialog {
+  max-width: 500px;
+  width: 90%; /* Ajuste para que ocupe un porcentaje del ancho */
+  margin: 1.75rem auto;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-title {
+  margin-bottom: 0;
+  line-height: 1.5;
+  font-weight: bold;
+  font-size: 1.25rem; /* Tamaño de fuente para el título */
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #dee2e6;
+}
+
+.btn-close {
+  padding: 0.5rem;
+  margin: -0.5rem -0.5rem -0.5rem auto;
+  background-color: transparent;
+  border: 0;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* 📱 Media query para dispositivos móviles */
+@media (max-width: 768px) {
+  .modal-overlay {
+    align-items: flex-start; /* Alinea el modal en la parte superior del viewport */
+    padding-top: 2rem; /* Agrega un poco de espacio en la parte superior */
+  }
+
+  .modal-dialog {
+    width: 95%; /* Ocupa casi todo el ancho para una mejor visibilidad */
+    margin: 0 auto; /* Centra el modal */
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 1rem; /* Reduce el padding en móviles */
+  }
+
+  .modal-title {
+    font-size: 1.1rem; /* Reduce el tamaño de la fuente para móviles */
+  }
+
+  .modal-footer {
+    flex-direction: column; /* Apila los botones verticalmente */
+    gap: 0.5rem; /* Espacio entre los botones apilados */
+  }
+
+  .modal-footer .btn {
+    width: 100%; /* Los botones ocupan todo el ancho */
+  }
+}

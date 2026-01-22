@@ -1,0 +1,12 @@
+
+elimina todas las tablas de la base de datos ProgreSQL
+    npx sequelize-cli db:migrate:undo:all
+
+vplver a migrar las tablas que se encuentran aca en migrations
+    npx sequelize-cli db:migrate    
+
+elimina las tablas de postgres en Render:
+    NODE_ENV=production npx sequelize-cli db:migrate:undo:all
+
+crea las tablas en render
+    NODE_ENV=production npx sequelize-cli db:migrate    

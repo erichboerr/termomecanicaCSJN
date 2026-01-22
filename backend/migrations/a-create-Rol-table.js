@@ -1,0 +1,48 @@
+"use strict";
+
+import { DataTypes } from "sequelize";
+
+/** @type {import('sequelize-cli').Migration} */
+export default {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable(
+      "roles",
+      {
+        idRol: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+        },
+        rol: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        flagHabilitado: {
+          type: DataTypes.BOOLEAN,
+          defaultValue: true,
+        },
+        createdAt: {
+          type: DataTypes.DATE,
+          allowNull: true,
+        },
+        updatedAt: {
+          type: DataTypes.DATE,
+          allowNull: true,
+        },
+        deletedAt: {
+          type: DataTypes.DATE,
+          allowNull: true,
+        },
+      },
+      {
+        timestamps: true,
+        tableName: "roles",
+        paranoid: true,
+      }
+    );
+  },
+
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable("roles");
+  },
+};
