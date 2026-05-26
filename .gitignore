@@ -43,3 +43,6 @@ Thumbs.db
 
 # PM2 logs/dumps
 .pm2/
+
+#imagenes
+uploads/
