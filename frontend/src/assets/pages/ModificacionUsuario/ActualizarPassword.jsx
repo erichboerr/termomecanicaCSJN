@@ -4,9 +4,7 @@ import ToastFeedback from "../../common/components/ToastFeedback";
 import FormRow from "../../common/components/FormRow";
 import ModalFeedback from "../../common/components/modalFeedback/ModalFeedback";
 import useUsuariosHabilitados from "./hooks/useUsuariosHabilitados";
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import axiosInstance from "../../../utils/axiosInstance.js";
 
 function ActualizarPassword() {
   const [formData, setFormData] = useState({ idUsuario: "", password: "" });
@@ -24,7 +22,7 @@ function ActualizarPassword() {
     if (!formData.idUsuario || !formData.password) return;
 
     try {
-      await axios.put(`${API_URL}/actualizarPassword`, {
+      await axiosInstance.put(`/actualizarPassword`, {
         idUsuario: formData.idUsuario,
         password: formData.password,
       });

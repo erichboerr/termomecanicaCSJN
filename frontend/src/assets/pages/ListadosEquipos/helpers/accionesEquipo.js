@@ -1,14 +1,13 @@
-import axios from "axios";
+import axiosInstance from "../../../../utils/axiosInstance.js";
 
-const API_URL = import.meta.env.VITE_API_URL;
 export const pedirReparacion = async ({ equipo, motivo, rolId, refrescar }) => {
   try {
     const idEquipo = equipo.idEquipoInstalado;
-    await axios.put(`${API_URL}/actualizarEstadoEquipo/${idEquipo}`, {
+    await axiosInstance.put(`/actualizarEstadoEquipo/${idEquipo}`, {
       idEstado: 2,
       observaciones: motivo,
     });
-    await axios.post(`${API_URL}/crearReparacion`, {
+    await axiosInstance.post(`/crearReparacion`, {
       ObservacionPedido: motivo,
       idEquipoInstalado: idEquipo,
       idSupervisor: rolId,
@@ -22,8 +21,8 @@ export const pedirReparacion = async ({ equipo, motivo, rolId, refrescar }) => {
 
 export const marcarUrgente = async ({ equipo, refrescar }) => {
   try {
-    await axios.put(
-      `${API_URL}/equiposInstalados/${equipo.idEquipoInstalado}`,
+    await axiosInstance.put(
+      `/equiposInstalados/${equipo.idEquipoInstalado}`,
       {
         idEstado: 3,
       }

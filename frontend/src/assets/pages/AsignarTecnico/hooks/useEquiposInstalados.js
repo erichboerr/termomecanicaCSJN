@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
+import axiosInstance from "../../../../utils/axiosInstance.js";
 
 const useEquiposInstalados = () => {
   const [equipos, setEquipos] = useState([]);
@@ -10,7 +9,7 @@ const useEquiposInstalados = () => {
   const refrescar = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${API_URL}/equiposInstalados`);      
+      const res = await axiosInstance.get(`/equiposInstalados`);      
 
       const sorted = res.data.sort((a, b) =>
         (a.oficina?.nombre || "").localeCompare(

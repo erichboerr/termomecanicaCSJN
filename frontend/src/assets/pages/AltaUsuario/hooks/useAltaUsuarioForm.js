@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../../../utils/axiosInstance.js";
 import { getRoles } from "../helpers/getRoles";
 import { validateAltaUsuario } from "../helpers/validateAltaUsuario";
 
-const API_URL = import.meta.env.VITE_API_URL;
 
   export function useAltaUsuarioForm(initialFormData, setModal) {
   const [formData, setFormData] = useState(initialFormData);
@@ -50,7 +49,7 @@ const API_URL = import.meta.env.VITE_API_URL;
     }
 
     try {
-      await axios.post(`${API_URL}/createUser`, {
+      await axiosInstance.post(`/createUser`, {
         ...formData,
         rol: parseInt(formData.rol),
       });

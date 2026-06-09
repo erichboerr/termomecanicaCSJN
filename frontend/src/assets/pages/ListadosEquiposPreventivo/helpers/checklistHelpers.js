@@ -1,5 +1,4 @@
-import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
+import axiosInstance from "../../../../utils/axiosInstance.js";
 
 // Cargar ítems acumulativos según frecuencia
 export async function getChecklistByFrecuencia(frecuencia) {
@@ -11,7 +10,7 @@ export async function getChecklistByFrecuencia(frecuencia) {
 
   const allItems = [];
   for (const f of frecuencias) {
-    const res = await axios.get(`${API_URL}/checklistItems`, { params: { frecuencia: f } });
+    const res = await axiosInstance.get(`/checklistItems`, { params: { frecuencia: f } });
     allItems.push(...res.data);
   }
 
@@ -22,7 +21,7 @@ export async function getChecklistByFrecuencia(frecuencia) {
 // Validar duplicados antes de abrir modal
 export async function validarPreventivo(idEquipoInstalado, fecha, frecuencia) {
   try {
-    const res = await axios.get(`${API_URL}/checklistItems/validar`, {
+    const res = await axiosInstance.get(`/checklistItems/validar`, {
       params: { idEquipoInstalado, fecha, frecuencia },
     });
     return res.data;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
+import axiosInstance from "../../../../utils/axiosInstance.js";
+
 const useTecnicos = () => {
   const [tecnicos, setTecnicos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,7 +10,7 @@ const useTecnicos = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get(`${API_URL}/usuarios?rol=4`);
+      const { data } = await axiosInstance.get(`/usuarios?rol=4`);
 
       const tecnicosFiltrados = Array.isArray(data)
         ? data.filter((t) => t.usuario && t.idUsuario)

@@ -1,12 +1,10 @@
-import axios from "axios";
-import.meta.env.VITE_API_URL;
+import axiosInstance from "../../../../utils/axiosInstance.js";
 
-const API_URL = import.meta.env.VITE_API_URL;
-
+//actualiza las fotos del equipo dado
 export const updateFotos = async (idEquipoInstalado, formData) => {
   try {
-    const response = await axios.put(
-      `${API_URL}/equipos_instalados/${idEquipoInstalado}/fotos`,
+    const response = await axiosInstance.put(
+      `/equipos_instalados/${idEquipoInstalado}/fotos`,
       formData,
       {
         headers: {

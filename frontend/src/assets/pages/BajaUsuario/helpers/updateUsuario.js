@@ -1,13 +1,10 @@
-import axios from "axios";
-import.meta.env.VITE_API_URL;
-
-const API_URL = import.meta.env.VITE_API_URL;
+import axiosInstance from "../../../../utils/axiosInstance.js";
 
 //actualiza el usuario dado de baja pasa flaghabilitado a false
 export const updateUsuario = async (usuarioId, flagHabilitado) => {
   try {
-    const response = await axios.put(
-      `${API_URL}/usuarios/${usuarioId}`,
+    const response = await axiosInstance.put(
+      `/usuarios/${usuarioId}`,
       { flagHabilitado }
     );
     return response.data;

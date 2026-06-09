@@ -1,17 +1,11 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../../../utils/axiosInstance.js";
 import { getPreventivoRevision } from "../helpers/preventivoCalendar";
 import { getChecklistByFrecuencia } from "../helpers/checklistHelpers";
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 const PreventivoModal = ({ equipo, onClose, setToast }) => {
-  // console.log("Oficina recibida:", equipo?.oficina);
-  // console.log("Equipo serie recibida:", equipo?.serie);
 
   const { tipo, year } = getPreventivoRevision(new Date());
-  // console.log("year recibida:", year);
-  // console.log("tipo recibida:", tipo);
 
   const [formData, setFormData] = useState({
     fecha: new Date().toISOString().slice(0, 10), // 🔒 siempre hoy
@@ -74,7 +68,7 @@ const PreventivoModal = ({ equipo, onClose, setToast }) => {
         }),
       };
 
-      await axios.post(`${API_URL}/accionesPreventivas`, payload);
+      await axiosInstance.post(`/accionesPreventivas`, payload);
 
       setToast({
         visible: true,

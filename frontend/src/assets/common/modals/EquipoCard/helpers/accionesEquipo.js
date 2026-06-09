@@ -1,33 +1,29 @@
-//Encapsula la lógica de reparación y urgencia.
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import axiosInstance from "../../../../utils/axiosInstance.js";
 
 export const marcarComoFuncionando = async ({
   idReparaciones,
   idEquipoInstalado,
   idTecnico,
   texto,
-  API_URL,
 }) => {
   if (!idReparaciones || !idEquipoInstalado || !idTecnico || !texto) {
     throw new Error("Datos incompletos para marcar como funcionando");
   }
 
   // 1. Guardar observación técnica
-  await axios.post(`${API_URL}/observacionesReparaciones`, {
+  await axiosInstance.post(`/observacionesReparacion`, {
     observaciones: texto,
     idReparaciones,
     idTecnicos: idTecnico,
   });
 
   // 2. Actualizar observación en reparaciones
-  await axios.put(`${API_URL}/reparaciones/${idReparaciones}`, {
+  await axiosInstance.put(`/reparaciones/${idReparaciones}`, {
     ObservacionPedido: "Funcionando",
   });
 
   // 3. Actualizar estado del equipo
-  await axios.put(`${API_URL}/equiposInstalados/${idEquipoInstalado}`, {
+  await axiosInstance.put(`/equiposInstalados/${idEquipoInstalado}`, {
     idEstado: 1,
   });
 };
@@ -52,7 +48,7 @@ export const guardarObservacionReparacion = async ({
     const observacion = texto.trim();
 
     // 1. Guardar en observaciones_reparaciones
-    await axios.post(`${API_URL}/observaciones-reparaciones`, {
+    await axiosInstance.post(`/observaciones-reparaciones`, {
       idReparacion,
       idTecnico,
       observacion,
@@ -62,13 +58,13 @@ export const guardarObservacionReparacion = async ({
     // 2. Actualizar campo ObservacionPedido en reparaciones
     const observacionPedido =
       modo === "finalizado" ? "Funcionando" : observacion;
-    await axios.put(`${API_URL}/reparaciones/${idReparacion}/observacion`, {
+    await axiosInstance.put(`/reparaciones/${idReparacion}/observacion`, {
       observacion: observacionPedido,
     });
 
     // 3. Si es finalizado, actualizar estado del equipo
     if (modo === "finalizado") {
-      await axios.put(`${API_URL}/equipos/${idEquipoInstalado}/estado`, {
+      await axiosInstance.put(`/equipos/${idEquipoInstalado}/estado`, {
         idEstado: 1, // Funcionando
       });
     }
@@ -87,10 +83,8 @@ export async function confirmarBajaEquipo(idEquipo) {
   if (!idEquipo) return false;
 
   try {
-    const res = await fetch(`${API_URL}/equipos/${idEquipo}/baja`, {
-      method: "POST",
-    });
-    return res.ok;
+    await axiosInstance.put(`/equiposInstalados/${idEquipo}/baja`,);
+    return true;
   } catch (error) {
     console.error("Error al dar de baja:", error);
     return false;

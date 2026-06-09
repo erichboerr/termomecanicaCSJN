@@ -1,9 +1,8 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../../utils/axiosInstance.js";
 import EquipoCard from "../../common/modals/EquipoCard";
 function EquipoDetalle() {
-  const API_URL = import.meta.env.VITE_API_URL;
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const [equipo, setEquipo] = useState(null);
@@ -12,11 +11,11 @@ function EquipoDetalle() {
   useEffect(() => {
     if (!id) return;
 
-    axios
-      .get(`${API_URL}/equipoDetalle/${id}`)
+    axiosInstance
+      .get(`/equipoDetalle/${id}`)
       .then((res) => setEquipo(res.data))
       .catch(() => setError("No se encontró el equipo o hubo un error"));
-  }, [id, API_URL]);
+  }, [id]);
 
   if (error) return <p className="text-danger mt-4 text-center">{error}</p>;
   if (!equipo) return <p className="mt-4 text-center">Cargando equipo...</p>;

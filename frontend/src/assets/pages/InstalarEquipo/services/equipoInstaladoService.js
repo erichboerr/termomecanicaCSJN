@@ -1,20 +1,19 @@
-import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
+import axiosInstance from "../../../../utils/axiosInstance.js";
 
 export async function obtenerCapacidadesPorModelo(idMarca, idModelo) {
-  const res = await axios.get(`${API_URL}/equipos/obtenerCapacidadesPorModelo`, {
+  const res = await axiosInstance.get(`/equipos/obtenerCapacidadesPorModelo`, {
     params: { idMarca, idModelo },
   });
   return res.data.map((item) => ({ id: item.id, value: item.capacidad }));
 }
 
 export async function buscarEquipoPorMarcaModelo(idMarca, idModelo) {
-  const res = await axios.get(`${API_URL}/equipos/buscarMarcaModelo`, {
+  const res = await axiosInstance.get(`/equipos/buscarMarcaModelo`, {
     params: { idMarca, idModelo },
   });
   return res.data;
 }
 
 export async function crearEquipoInstalado(data) {
-  return await axios.post(`${API_URL}/createEquipoInstalado`, data);  
+  return await axiosInstance.post(`/createEquipoInstalado`, data);  
 }

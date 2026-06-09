@@ -2,13 +2,12 @@ import { useState, useMemo } from "react";
 import useEquiposInstalados from "./hooks/useEquiposInstalados";
 import useTecnicos from "./hooks/userTecnicos";
 import FilaAsignarTecnico from "./components/FilaAsignarTecnico";
-import axios from "axios";
+import axiosInstance from "../../../utils/axiosInstance.js";
 import ToastFeedback from "./components/ToastFeedback";
 import "../../common/css/ListadoEquipo.css";
 import "../../common/css/estadoVisual.css";
 
 const AsignarTecnico = () => {
-  const API_URL = import.meta.env.VITE_API_URL;
   const idSupervisor = sessionStorage.getItem("rolId");
   const {
     equipos,
@@ -30,7 +29,7 @@ const AsignarTecnico = () => {
     try {
       console.log("idEquipoInstalado:", idEquipoInstalado),
         console.log("idTecnico:", idTecnico),
-        await axios.put(`${API_URL}/reparaciones/asignar`, {
+        await axiosInstance.put(`/reparaciones/asignar`, {
           idEquipoInstalado,
           idTecnico,
           idSupervisor,

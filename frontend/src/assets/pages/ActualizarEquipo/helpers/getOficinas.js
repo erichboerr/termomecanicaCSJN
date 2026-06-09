@@ -1,11 +1,8 @@
-import axios from "axios";
-import.meta.env.VITE_API_URL;
-
-const API_URL = import.meta.env.VITE_API_URL;
+import axiosInstance from "../../../../utils/axiosInstance.js";
 
 export const getOficinas = async (oficina) => {
     try {
-        const response = await axios.get(`${API_URL}/oficinas/${oficina}`);
+        const response = await axiosInstance.get(`/oficinas/${oficina}`);
         return response.data;
     } catch (error) {
         console.error("Error al traer las oficinas:", error.response?.data || error.message);

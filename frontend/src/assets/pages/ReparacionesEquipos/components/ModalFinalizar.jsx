@@ -1,9 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../../../utils/axiosInstance.js";
 import ModalFeedback from "../../../common/components/modalFeedback/ModalFeedback";
 import styles from "../../../common/components/modalFeedback/ModalFeedback.module.css";
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 const ModalFinalizar = ({ show, onClose, reparacion, onSuccess }) => {
   const [observacion, setObservacion] = useState("");
@@ -21,7 +19,7 @@ const ModalFinalizar = ({ show, onClose, reparacion, onSuccess }) => {
     }
 
     try {
-      await axios.post(`${API_URL}/finalizarReparacion`, {
+      await axiosInstance.post(`/finalizarReparacion`, {
         idReparaciones: reparacion.idReparaciones,
         idEquipoInstalado: reparacion.idEquipoInstalado,
         idTecnico: userId,

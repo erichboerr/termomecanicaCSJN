@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../../utils/axiosInstance.js";
 import ReparacionesListar from "./components/ReparecionesListar";
 import SelectorTecnico from "./components/SelectorTecnico";
 import filtrarReparaciones from "./helpers/filtrarReparaciones";
@@ -14,7 +14,6 @@ const ReparacionesEquipos = () => {
   const rolId = parseInt(sessionStorage.getItem("rolId"), 10) || 0;
   const [tecnicos, setTecnicos] = useState([]);
   const [tecnicoSeleccionado, setTecnicoSeleccionado] = useState(null);
-  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     if (!userId) {
@@ -25,7 +24,7 @@ const ReparacionesEquipos = () => {
 
     const fetchReparaciones = async () => {
       try {
-        const res = await axios.get(`${API_URL}/reparacionesConDetalles`);
+        const res = await axiosInstance.get(`/reparacionesConDetalles`);
         const reparacionesFiltradas = filtrarReparaciones(
           res.data,
           rolId,
@@ -43,12 +42,12 @@ const ReparacionesEquipos = () => {
     };
 
     fetchReparaciones();
-  }, [userId, rolId, tecnicoSeleccionado, API_URL]); 
+  }, [userId, rolId, tecnicoSeleccionado]); 
 
   useEffect(() => {
     const fetchTecnicos = async () => {
       try {
-        const res = await axios.get(`${API_URL}/usuariosTecnicos`);
+        const res = await axiosInstance.get(`/usuariosTecnicos`);
         setTecnicos(res.data);
       } catch (err) {
         console.error("Error al cargar técnicos:", err);
@@ -58,7 +57,7 @@ const ReparacionesEquipos = () => {
     if (rolId !== 4) {
       fetchTecnicos();
     }
-  }, [rolId, API_URL]);
+  }, [rolId]);
 
   if (loading) {
     return (

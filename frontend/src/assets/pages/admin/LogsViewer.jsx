@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, Form, Button } from "react-bootstrap";
-const API_URL = import.meta.env.VITE_API_URL;
+import axiosInstance from "../../../utils/axiosInstance.js";
 
 const LogsViewer = () => {
   const [logs, setLogs] = useState([]);
@@ -8,37 +8,24 @@ const LogsViewer = () => {
 
   const cargarLogs = async () => {
     try {
-      const token = sessionStorage.getItem("token");
-      const res = await fetch(`${API_URL}/logs`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const contentType = res.headers.get("content-type");
-      if (!contentType?.includes("application/json")) {
-        console.warn("Respuesta no es JSON:", await res.text());
-        setLogs("formatoInvalido");
-        return;
-      }
-
-      const data = await res.json();
+      const { data } = await axiosInstance.get("/logs");
 
       if (Array.isArray(data)) {
         setLogs(data);
-      } else if (data?.error === "Acceso denegado") {
-        setLogs("denegado");
-      } else if (data?.error === "Token faltante") {
-        setLogs("sinToken");
-      } else if (data?.error === "Token inválido") {
-        setLogs("tokenInvalido");
       } else {
         console.warn("Respuesta inesperada:", data);
         setLogs([]);
       }
     } catch (err) {
-      console.error("Error al cargar logs:", err);
-      setLogs([]);
+      const status = err.response?.status;
+      if (status === 403) {
+        setLogs("denegado");
+      } else if (status === 401) {
+        setLogs("sinToken");
+      } else {
+        console.error("Error al cargar logs:", err);
+        setLogs([]);
+      }
     }
   };
 
@@ -60,41 +47,17 @@ const LogsViewer = () => {
     return (
       <Card className="m-3">
         <Card.Body>
-          <h5 className="text-danger">
-            🚫 No tenés permiso para ver los logs del sistema
-          </h5>
+          <h5 className="text-danger">🚫 No tenés permiso para ver los logs del sistema</h5>
         </Card.Body>
       </Card>
     );
   }
 
-  if (logs === "formatoInvalido") {
-  return (
-    <Card className="m-3">
-      <Card.Body>
-        <h5 className="text-danger">⚠️ El servidor respondió con un formato inesperado. Verificá que el endpoint `/logs` esté activo y devuelva JSON.</h5>
-      </Card.Body>
-    </Card>
-  );
-}
-
-if (logs === "tokenInvalido") {
-  return (
-    <Card className="m-3">
-      <Card.Body>
-        <h5 className="text-warning">🔒 Token inválido. Iniciá sesión nuevamente para acceder a los logs.</h5>
-      </Card.Body>
-    </Card>
-  );
-}
-
   if (logs === "sinToken") {
     return (
       <Card className="m-3">
         <Card.Body>
-          <h5 className="text-warning">
-            🔒 Token faltante. Iniciá sesión nuevamente para acceder a los logs.
-          </h5>
+          <h5 className="text-warning">🔒 Token faltante. Iniciá sesión nuevamente para acceder a los logs.</h5>
         </Card.Body>
       </Card>
     );
