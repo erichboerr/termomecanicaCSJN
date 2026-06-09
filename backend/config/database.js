@@ -1,34 +1,20 @@
-import dotenv from "dotenv";
-dotenv.config();
+import { Sequelize } from "sequelize";
 
-const getPassword = () => {
-  const raw = process.env.DB_PASSWORD;
-  if (typeof raw !== "string" || !raw.trim()) {
-    throw new Error("❌ DB_PASSWORD debe ser un string válido y no vacío");
-  }
-  return raw;
-};
+if (!process.env.DATABASE_URL) {
+  console.error("❌ DATABASE_URL no está definida. Abortando.");
+  process.exit(1);
+}
 
-export const getDbConfig = () => {
-  const env = process.env.NODE_ENV || "development";
-  const isProduction = env === "production";
+const db = new Sequelize(process.env.DATABASE_URL, {
+  dialect: "postgres",
+  protocol: "postgres",
+  dialectOptions: {
+    ssl:
+      process.env.NODE_ENV === "production"
+        ? { require: true, rejectUnauthorized: false }
+        : false,
+  },
+  logging: false,
+});
 
-  return {
-    username: process.env.DB_USERNAME,
-    password: getPassword(),
-    database: process.env.DB_DATABASE,
-    host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT),
-    dialect: process.env.DB_DIALECT || "postgres",
-    logging: !isProduction,
-    dialectOptions:
-      isProduction && process.env.DB_SSL === "true"
-        ? {
-            ssl: {
-              require: true,
-              rejectUnauthorized: false,
-            },
-          }
-        : {},
-  };
-};
+export default db;
