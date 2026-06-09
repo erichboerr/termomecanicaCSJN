@@ -7,6 +7,7 @@ import {
   Modelo,
   Usuario,
   ObservacionesReparaciones,
+  sequelize, 
 } from "../models/index.js";
 import logger from "../helpers/logger.js";
 
@@ -157,32 +158,54 @@ export const createObservacionesReparaciones = async (req, res) => {
 };
 /***************************************************************/
 
+// backend/controllers/ReparacionesController.js
+
 export const finalizarReparacion = async (req, res) => {
-  const { idReparaciones, idEquipoInstalado, idTecnico, observaciones } =
-    req.body;
+  const { idReparaciones, idEquipoInstalado, idTecnico, observaciones } = req.body;
+
+  if (!idReparaciones || !idEquipoInstalado || !idTecnico || !observaciones) {
+    return res.status(400).json({ error: "Faltan campos obligatorios." });
+  }
+
+  const transaction = await sequelize.transaction();
 
   try {
-    // 1. Guardar la observación final
+    // 1. Verificar que la reparación existe y no está ya finalizada
+    const reparacion = await Reparaciones.findByPk(idReparaciones, { transaction });
+    if (!reparacion) {
+      await transaction.rollback();
+      return res.status(404).json({ error: "Reparación no encontrada." });
+    }
+    if (reparacion.Finalizado) {
+      await transaction.rollback();
+      return res.status(409).json({ error: "La reparación ya fue finalizada." });
+    }
+
+    // 2. Guardar la observación final
     await ObservacionesReparaciones.create({
       idReparaciones,
       idTecnicos: idTecnico,
       observaciones,
       EstadoReparacion: true,
-    });
+    }, { transaction });
 
-    // 2. Actualizar el estado del equipo instalado a "Funcionando"
+    // 3. Actualizar el estado del equipo instalado a "Funcionando"
     await EquipoInstalado.update(
       { idEstado: 1, observaciones: "EQUIPO OPERATIVO" },
-      { where: { idEquipoInstalado: idEquipoInstalado } }
-    );
-    // 3. Marcar la reparación como finalizada
-    await Reparaciones.update(
-      { Finalizado: true },
-      { where: { idReparaciones: idReparaciones } }
+      { where: { idEquipoInstalado }, transaction }
     );
 
+    // 4. Marcar la reparación como finalizada
+    await Reparaciones.update(
+      { Finalizado: true },
+      { where: { idReparaciones }, transaction }
+    );
+
+    await transaction.commit();
     res.status(200).json({ message: "Reparación finalizada con éxito." });
+
   } catch (error) {
+    await transaction.rollback();
     logger.error(`Error al finalizar la reparación: ${error.message}`);
     res.status(500).json({ error: "No se pudo finalizar la reparación." });
   }

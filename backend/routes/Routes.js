@@ -27,7 +27,7 @@ import {
   getEquipoPorOficina,
   actualizarFotosEquipo,
   getEquipoInstaladoById,
-  getPreventivoPlanilla, 
+  getPreventivoPlanilla,
 } from "../controllers/EquipoInstaladoController.js";
 import { getRoles } from "../controllers/RolesController.js";
 import {
@@ -46,30 +46,35 @@ import upload from "../middleware/uploads.js";
 import { getLogs } from "../helpers/getLogs.js";
 import {
   registrarAccionPreventiva,
-  obtenerChecklistItems, validarChecklistItems 
+  obtenerChecklistItems,
+  validarChecklistItems,
 } from "../controllers/EquiposInstaladosPreventivosController.js";
 
 const router = express.Router();
-//Posts
+
+// ✅ Rutas públicas — ANTES del middleware global
+router.post("/login", loginUsuario);
+router.get("/oficinas/:oficina", getEquipoPorOficina); // usada por QR público
+router.get("/equipoDetalle/:id", getEquipoInstaladoById); // usada por QR público
+
+// 🔒 Todo lo demás requiere token
+router.use(authMiddleware);
+
+// Posts
 router.post("/createUser", crearUsuario);
 router.post("/createRol", createRole);
 router.post("/select/:key", addSelectOption);
 router.post("/equipos", createEquipo);
-router.post("/login", loginUsuario);
 router.post(
   "/createEquipoInstalado",
   upload.array("fotos", 2),
-  (req, res, next) => {
-    next();
-  },
-  createEquipoInstalado
+  createEquipoInstalado,
 );
 router.post("/accion", aplicarAccion);
 router.post("/crearReparacion", crearReparacion);
 router.post("/observacionesReparacion", createObservacionesReparaciones);
 router.post("/finalizarReparacion", finalizarReparacion);
 router.post("/accionesPreventivas", registrarAccionPreventiva);
-
 
 // Gets
 router.get("/usuarios/habilitados", getUsuariosHabilitados);
@@ -86,14 +91,13 @@ router.get("/equipos/obtenerCapacidadesPorModelo", obtenerCapacidadesPorModelo);
 router.get("/fechas", getInformePorFechas);
 router.get("/tecnico", getInformePorTecnico);
 router.get("/oficina", getInformePorOficina);
-router.get("/oficinas/:oficina", getEquipoPorOficina);
-router.get("/equipoDetalle/:id", getEquipoInstaladoById);
-router.get("/logs", authMiddleware, (req, res) => {
+router.get("/checklistItems", obtenerChecklistItems);
+router.get("/checklistItems/validar", validarChecklistItems);
+router.get("/logs", (req, res) => {
+  if (req.user?.rolId !== 1) {
+    return res.status(403).json({ error: "Acceso denegado" });
+  }
   try {
-    if (req.user?.rolId !== 1) {
-      return res.status(403).json({ error: "Acceso denegado" });
-    }
-
     const logs = getLogs();
     res.json(logs);
   } catch (err) {
@@ -101,10 +105,8 @@ router.get("/logs", authMiddleware, (req, res) => {
     res.status(500).json({ error: "Error interno al obtener logs" });
   }
 });
-router.get("/checklistItems", obtenerChecklistItems);
-router.get("/checklistItems/validar", validarChecklistItems);
 
-//Puts
+// Puts
 router.put("/usuarios/:id", updateUsuario);
 router.put("/actualizarEstadoEquipo/:id", actualizarEstadoEquipo);
 router.put("/equiposInstalados/:id", actualizarEstadoEquipo);
@@ -115,7 +117,7 @@ router.put("/actualizarPassword", actualizarPassword);
 router.put(
   "/equipos_instalados/:id/fotos",
   upload.array("fotos", 2),
-  actualizarFotosEquipo
+  actualizarFotosEquipo,
 );
 
 export default router;
