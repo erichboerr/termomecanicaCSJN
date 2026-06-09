@@ -15,7 +15,6 @@ import ActualizarPassword from "../assets/pages/ModificacionUsuario/ActualizarPa
 import ActualizarEquipo from "../assets/pages/ActualizarEquipo/ActualizarEquipo";
 import EntradaDesdeQR from "../assets/pages/ListadosEquipos/components/EntradaDesdeQR";
 import EquipoDetalle from "../assets/pages/PedidoCliente/EquipoDetalle";
-import ProtectedRoute from "../middleware/ProtectedRoute";
 import ListadoEquipoPreventivo from "../assets/pages/ListadosEquiposPreventivo/ListadoEquipoPreventivo";
 import LogsViewer from "../assets/pages/admin/LogsViewer";
 import { RequireAuth } from "../assets/common/components/RequireAuth";
@@ -143,17 +142,17 @@ const Rutas = () => {
         <Route
           path="/equipoDetalle"
           element={
-            <ProtectedRoute>
+            <RequireAuth>
               <EquipoDetalle />
-            </ProtectedRoute>
+            </RequireAuth>
           }
         />
         <Route
           path="/listadoEquipoPreventivo"
           element={
-            <ProtectedRoute>
+            <RequireAuth>
               <ListadoEquipoPreventivo />
-            </ProtectedRoute>
+            </RequireAuth>
           }
         />
       </Routes>
