@@ -38,7 +38,7 @@ export function useLoginForm(setModal) {
         sessionStorage.setItem("usuario", data.usuario);       
         sessionStorage.setItem("rolId", data.rolId);
         sessionStorage.setItem("userId", data.userId);        
-        sessionStorage.setItem("expiresAt", Date.now() + 1000 * 60 * 60); // 1 hora
+        sessionStorage.setItem("expiresAt", Date.now() + 1000 * 60 * 60 * 4); // 4 horas
         revalidateAuth(setAuthState); 
         setShowToast(true);                
       } else {

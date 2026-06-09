@@ -104,7 +104,7 @@ export const loginUsuario = async (req, res) => {
         userId: usuario.idUsuario,
       },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" },
+      { expiresIn: "4h" },
     );
 
     // Devuelve el Nombre de usuario y el idRol
