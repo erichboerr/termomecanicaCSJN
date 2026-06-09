@@ -9,6 +9,8 @@ import rutas from "./routes/Routes.js";
 import { cargarSeeds } from "./seedDB/cargarSeeds.js";
 import { seedChecklistItems } from "./seedDB/seedChekListItems.js";
 import { fileURLToPath } from "url";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 
 const envPath =
   process.env.NODE_ENV === "production" ? ".env.production" : ".env";
@@ -23,12 +25,23 @@ const __dirname = path.dirname(__filename);
 // 🧠 Parsers
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(helmet());
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { error: "Demasiados intentos. Intentá de nuevo en 15 minutos." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use("/login", loginLimiter);
 
 if (isProduction) {
   const corsOptions = {
     origin: [
       "https://termomecanicacsjn.com",
-      "https://www.termomecanicacsjn.com"
+      "https://www.termomecanicacsjn.com",
     ],
     credentials: true,
   };
@@ -61,17 +74,9 @@ app.use(rutas);
 
 // 🖼️ Archivos estáticos
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-//app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
-app.use((req, res, next) => {
-  console.log("Content-Type:", req.headers["content-type"]);
-  next();
-});
 
 if (isProduction) {
-  //const frontendPath = path.join(process.cwd(), "..", "frontend", "dist");
   const frontendPath = path.join(__dirname, "..", "frontend", "dist");
-
-  // Sirve los archivos estáticos de la aplicación frontend.
   app.use(express.static(frontendPath));
   app.get("/:splat*", (req, res) => {
     try {
@@ -94,12 +99,10 @@ app.listen(PORT, "0.0.0.0", async () => {
     await db.authenticate();
     console.log("✅ Base de datos conectada");
 
-    // Solo sincronizar si se especifica explícitamente
     if (process.env.DB_SYNC === "true") {
       await db.sync({ force: true });
       console.log("🛠️ Base de datos sincronizada");
     }
-    // Solo cargar seeds si se especifica explícitamente
     if (process.env.DB_SEED === "true") {
       await cargarSeeds();
       await seedChecklistItems();
