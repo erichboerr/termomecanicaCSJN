@@ -15,7 +15,6 @@ import {
 import { UniqueConstraintError } from "sequelize";
 import { deleteOldPhotos } from "../helpers/deleteOldPhotos.js";
 import logger from "../helpers/logger.js";
-import { log } from "console";
 import { Chequeo, ChequeoDetalle, ChecklistItem } from "../models/index.js";
 
 export async function createEquipoInstalado(req, res) {
