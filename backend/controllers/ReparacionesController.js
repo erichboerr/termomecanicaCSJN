@@ -7,8 +7,9 @@ import {
   Modelo,
   Usuario,
   ObservacionesReparaciones,
-  sequelize, 
+  sequelize,
 } from "../models/index.js";
+import { ESTADOS } from "../constants/estados.js";
 import logger from "../helpers/logger.js";
 
 export const crearReparacion = async (req, res) => {
@@ -148,7 +149,7 @@ export const createObservacionesReparaciones = async (req, res) => {
       .json({ message: "Observación de reparación guardada con éxito." });
   } catch (error) {
     logger.error(
-      `Error al guardar la observación de reparación: ${error.message}`
+      `Error al guardar la observación de reparación: ${error.message}`,
     );
     // ⚠️ Importante: Devuelve el error para que el frontend pueda manejarlo
     res
@@ -161,7 +162,8 @@ export const createObservacionesReparaciones = async (req, res) => {
 // backend/controllers/ReparacionesController.js
 
 export const finalizarReparacion = async (req, res) => {
-  const { idReparaciones, idEquipoInstalado, idTecnico, observaciones } = req.body;
+  const { idReparaciones, idEquipoInstalado, idTecnico, observaciones } =
+    req.body;
 
   if (!idReparaciones || !idEquipoInstalado || !idTecnico || !observaciones) {
     return res.status(400).json({ error: "Faltan campos obligatorios." });
@@ -171,39 +173,45 @@ export const finalizarReparacion = async (req, res) => {
 
   try {
     // 1. Verificar que la reparación existe y no está ya finalizada
-    const reparacion = await Reparaciones.findByPk(idReparaciones, { transaction });
+    const reparacion = await Reparaciones.findByPk(idReparaciones, {
+      transaction,
+    });
     if (!reparacion) {
       await transaction.rollback();
       return res.status(404).json({ error: "Reparación no encontrada." });
     }
     if (reparacion.Finalizado) {
       await transaction.rollback();
-      return res.status(409).json({ error: "La reparación ya fue finalizada." });
+      return res
+        .status(409)
+        .json({ error: "La reparación ya fue finalizada." });
     }
 
     // 2. Guardar la observación final
-    await ObservacionesReparaciones.create({
-      idReparaciones,
-      idTecnicos: idTecnico,
-      observaciones,
-      EstadoReparacion: true,
-    }, { transaction });
+    await ObservacionesReparaciones.create(
+      {
+        idReparaciones,
+        idTecnicos: idTecnico,
+        observaciones,
+        EstadoReparacion: true,
+      },
+      { transaction },
+    );
 
     // 3. Actualizar el estado del equipo instalado a "Funcionando"
     await EquipoInstalado.update(
-      { idEstado: 1, observaciones: "EQUIPO OPERATIVO" },
-      { where: { idEquipoInstalado }, transaction }
+      { idEstado: ESTADOS.OPERATIVO, observaciones: "EQUIPO OPERATIVO" },
+      { where: { idEquipoInstalado }, transaction },
     );
 
     // 4. Marcar la reparación como finalizada
     await Reparaciones.update(
       { Finalizado: true },
-      { where: { idReparaciones }, transaction }
+      { where: { idReparaciones }, transaction },
     );
 
     await transaction.commit();
     res.status(200).json({ message: "Reparación finalizada con éxito." });
-
   } catch (error) {
     await transaction.rollback();
     logger.error(`Error al finalizar la reparación: ${error.message}`);

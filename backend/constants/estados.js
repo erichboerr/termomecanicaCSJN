@@ -1,0 +1,6 @@
+export const ESTADOS = {
+  OPERATIVO: 1,
+  MANTENIMIENTO: 2,
+  URGENTE: 3,
+  FUERA_DE_SERVICIO: 4,
+};

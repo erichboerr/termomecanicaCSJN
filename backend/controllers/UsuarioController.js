@@ -2,6 +2,8 @@ import bcrypt from "bcrypt";
 import { Usuario, Rol } from "../models/index.js";
 import logger from "../helpers/logger.js";
 import jwt from "jsonwebtoken";
+import { ROLES } from "../constants/roles.js";
+
 /***************************************************************************/
 
 export const crearUsuario = async (req, res) => {
@@ -78,7 +80,7 @@ export const updateUsuario = async (req, res) => {
 //hacemos loging
 export const loginUsuario = async (req, res) => {
   const { user, password } = req.body;
-  
+
   try {
     // Busca el usuario por nombre
     const usuario = await Usuario.findOne({ where: { usuario: user } });
@@ -102,7 +104,7 @@ export const loginUsuario = async (req, res) => {
         userId: usuario.idUsuario,
       },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1h" },
     );
 
     // Devuelve el Nombre de usuario y el idRol
@@ -130,7 +132,8 @@ export const getTecnico = async (req, res) => {
     }
 
     const tecnicos = await Usuario.findAll({
-      where: { idRol: rol, flagHabilitado: true },
+      where: { idRol: ROLES.TECNICO, flagHabilitado: true },
+      
     });
     return res.json(tecnicos);
   } catch (error) {

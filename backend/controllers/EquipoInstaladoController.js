@@ -1,5 +1,6 @@
 import { validateEquipoInstalado } from "../helpers/validateEquipoInstalado.js";
 import sequelize from "../dataBase/db.js";
+import { ESTADOS } from "../constants/estados.js";
 import {
   EquipoInstalado,
   Equipo,
@@ -255,7 +256,7 @@ export const bajaEquiposInstalados = async (req, res) => {
     // Actualiza el equipo
     equipo.flagHabilitado = false;
     equipo.observaciones = `Equipo dado de Baja: ${motivo}`;
-    equipo.idEstado = 4; // Estado "Baja"
+    equipo.idEstado = ESTADOS.FUERA_DE_SERVICIO;
     await equipo.save({ transaction });
 
     // Actualiza las reparaciones asociadas al equipo

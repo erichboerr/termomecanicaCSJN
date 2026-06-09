@@ -49,6 +49,7 @@ import {
   obtenerChecklistItems,
   validarChecklistItems,
 } from "../controllers/EquiposInstaladosPreventivosController.js";
+import { ROLES } from "../constants/roles.js";
 
 const router = express.Router();
 
@@ -94,7 +95,7 @@ router.get("/oficina", getInformePorOficina);
 router.get("/checklistItems", obtenerChecklistItems);
 router.get("/checklistItems/validar", validarChecklistItems);
 router.get("/logs", (req, res) => {
-  if (req.user?.rolId !== 1) {
+  if (req.user?.rolId !== ROLES.ADMIN) {
     return res.status(403).json({ error: "Acceso denegado" });
   }
   try {
