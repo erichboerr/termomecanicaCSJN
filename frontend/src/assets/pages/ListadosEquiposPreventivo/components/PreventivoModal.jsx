@@ -1,24 +1,21 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { getPreventivoRevision } from "../helpers/preventivoCalendar";
-import {
-  getChecklistByFrecuencia,
-} from "../helpers/checklistHelpers";
+import { getChecklistByFrecuencia } from "../helpers/checklistHelpers";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const PreventivoModal = ({ equipo, onClose, setToast }) => {
- // console.log("Oficina recibida:", equipo?.oficina);
- // console.log("Equipo serie recibida:", equipo?.serie);  
-  
-  const { tipo, year } = getPreventivoRevision(new Date());
- // console.log("year recibida:", year);
- // console.log("tipo recibida:", tipo);
+  // console.log("Oficina recibida:", equipo?.oficina);
+  // console.log("Equipo serie recibida:", equipo?.serie);
 
+  const { tipo, year } = getPreventivoRevision(new Date());
+  // console.log("year recibida:", year);
+  // console.log("tipo recibida:", tipo);
 
   const [formData, setFormData] = useState({
     fecha: new Date().toISOString().slice(0, 10), // 🔒 siempre hoy
-    //fecha: "2026-04-15", 
+    //fecha: "2026-04-15",
     oficina: equipo?.oficina,
     frecuencia: tipo,
     yearPreventivo: year,
@@ -58,22 +55,12 @@ const PreventivoModal = ({ equipo, onClose, setToast }) => {
     e.preventDefault();
 
     try {
-      // Validar duplicados antes de enviar
-      console.log("formData.oficina:", formData.oficina);
-      console.log("formData.fecha:", formData.fecha);
-      console.log("formData.frecuencia:", formData.frecuencia);
-      console.log("formData.serie:", formData.serie);
-      
       // Armar payload
       const payload = {
         fecha: formData.fecha,
-        oficina: equipo.oficina,
-        marca: equipo.equipo?.marca?.marca,
-        modelo: equipo.equipo?.modelo?.modelo,
-        serie: equipo.serie,
-        tipo: equipo.equipo?.tipoEquipo?.tipoEquipo,
+        idEquipoInstalado: equipo.idEquipoInstalado, // ✅ FK en lugar de strings
         usuarioId: Number(sessionStorage.getItem("userId") || 6),
-        equipoId: equipo.equipoId,
+        equipoId: equipo.idEquipo,
         frecuencia_aplicada: formData.frecuencia,
         year: formData.yearPreventivo,
         detalles: formData.checklist.map((item) => {
@@ -86,9 +73,6 @@ const PreventivoModal = ({ equipo, onClose, setToast }) => {
           };
         }),
       };
-
-      console.log("payload:", payload);
-
 
       await axios.post(`${API_URL}/accionesPreventivas`, payload);
 

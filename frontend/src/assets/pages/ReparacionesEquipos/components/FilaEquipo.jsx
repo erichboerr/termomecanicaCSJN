@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-//Encapsula la visualización de cada equipo.
-import getEstadoClass from "../../../common/helpers/getEstadoClass";
-import { getMarca, getModelo } from "../helpers/getMarcaModelo";
-=======
+
 import getEstadoClass from "../../../common/helpers/getEstadoClass";
 import { getMarca, getModelo } from "../../../common/helpers/getMarcaModelo";
->>>>>>> Hostinger
 
 const FilaEquipo = ({ equipo, rolId, onReparar, onUrgente, onVerDetalle }) => {
   return (

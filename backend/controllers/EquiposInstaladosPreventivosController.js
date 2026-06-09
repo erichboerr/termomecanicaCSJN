@@ -4,47 +4,32 @@ import { ChecklistItem, Chequeo, ChequeoDetalle } from "../models/index.js";
 export const registrarAccionPreventiva = async (req, res) => {
   try {
     const {
-      fecha,
-      oficina,
-      marca,
-      modelo,
-      serie,
-      tipo,
+      idEquipoInstalado,
       usuarioId,
       equipoId,
+      fecha,
       frecuencia_aplicada,
       detalles = [],
     } = req.body;
 
-    // Validaciones defensivas
-    if (!fecha || !oficina || !marca || !modelo || !serie || !tipo) {
-      return res
-        .status(400)
-        .json({ error: "Faltan datos del encabezado del chequeo" });
+    if (!idEquipoInstalado || !usuarioId || !fecha || !frecuencia_aplicada) {
+      return res.status(400).json({ error: "Faltan datos del encabezado del chequeo" });
     }
 
     const fechaObj = new Date(fecha);
     const mes = fechaObj.getMonth() + 1;
     const year = fechaObj.getFullYear();
-
-    // 👇 lógica de periodo: noviembre y diciembre pertenecen al año siguiente
     const periodo = mes >= 11 ? year + 1 : year;
 
-    // Crear chequeo
     const chequeo = await Chequeo.create({
       fecha,
-      oficina,
-      marca,
-      modelo,
-      serie,
-      tipo,
+      idEquipoInstalado: Number(idEquipoInstalado),
       usuarioId: Number(usuarioId),
       equipoId: Number(equipoId),
       frecuencia_aplicada,
-      periodo, // 👈 guardamos periodo
+      periodo,
     });
 
-    // Crear detalles
     const mesAplicado = mes;
     const detallesData = detalles.map((d) => ({
       chequeoId: chequeo.id,
@@ -88,41 +73,24 @@ export const obtenerChecklistItems = async (req, res) => {
 // GET /checklistItems
 export const validarChecklistItems = async (req, res) => {
   try {
-    const { oficina, fecha, frecuencia, serie } = req.query;
-    console.log("validarChecklistItems params:", {
-      oficina,
-      fecha,
-      frecuencia,
-      serie,
-    });
+    const { idEquipoInstalado, fecha, frecuencia } = req.query;
 
-    if (!oficina || !fecha || !frecuencia) {
+    if (!idEquipoInstalado || !fecha || !frecuencia) {
       return res.status(400).json({ error: "Parámetros incompletos" });
-    }
-
-    function calcularPeriodoPreventivo(fecha) {
-      const [y, m] = fecha.split("-").map(Number);
-      // Si el mes es noviembre (11) o diciembre (12), pertenece al periodo siguiente
-      return m >= 11 ? y + 1 : y;
     }
 
     const [y, m, d] = fecha.split("-").map(Number);
     if (!y || !m || !d) {
       return res.status(400).json({ error: "Fecha inválida. Use YYYY-MM-DD" });
     }
-    /*console.log("Oficina recibida:", oficina);
-    console.log("Fecha recibida:", fecha);
-    console.log("Frecuencia recibida:", frecuencia);
-    console.log("Serie recibida:", serie);*/
 
-    const periodoPreventivo = calcularPeriodoPreventivo(fecha);
+    const periodo = m >= 11 ? y + 1 : y;
 
     const duplicado = await Chequeo.findOne({
       where: {
-        oficina,
+        idEquipoInstalado: Number(idEquipoInstalado),
         frecuencia_aplicada: frecuencia,
-        periodo: periodoPreventivo,
-        serie,
+        periodo,
       },
       include: [
         {
@@ -134,9 +102,8 @@ export const validarChecklistItems = async (req, res) => {
     });
 
     if (duplicado) {
-      const { marca, modelo, serie } = duplicado;
       return res.status(400).json({
-        error: `Ya existe un registro para Oficina: ${oficina}, Marca: ${marca}, Modelo: ${modelo}, Serie: ${serie}, en el mes ${m} del ${y}`,
+        error: `Ya existe un registro para este equipo en el mes ${m} del ${y}`,
       });
     }
 

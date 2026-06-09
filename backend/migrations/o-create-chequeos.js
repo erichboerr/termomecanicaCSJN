@@ -9,29 +9,25 @@ export async function up(queryInterface, DataTypes) {
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
-    oficina: {
-      type: DataTypes.STRING,
+    idEquipoInstalado: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-    },
-    marca: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    modelo: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    serie: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    tipo: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      references: {
+        model: "equipos_instalados",
+        key: "idEquipoInstalado",
+      },
+      onUpdate: "CASCADE",
+      onDelete: "SET NULL",
     },
     usuarioId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: "usuarios",
+        key: "idUsuario",
+      },
+      onUpdate: "CASCADE",
+      onDelete: "SET NULL",
     },
     equipoId: {
       type: DataTypes.INTEGER,

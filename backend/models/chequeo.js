@@ -13,24 +13,8 @@ const Chequeo = db.define(
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
-    oficina: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    marca: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    modelo: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    serie: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    tipo: {
-      type: DataTypes.STRING,
+    idEquipoInstalado: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     usuarioId: {

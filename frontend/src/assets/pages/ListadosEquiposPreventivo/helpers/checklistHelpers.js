@@ -20,15 +20,13 @@ export async function getChecklistByFrecuencia(frecuencia) {
 }
 
 // Validar duplicados antes de abrir modal
-export async function validarPreventivo(oficina, fecha, frecuencia , serie) {
+export async function validarPreventivo(idEquipoInstalado, fecha, frecuencia) {
   try {
-    console.log("helpers validarPreventivo params:", { oficina, fecha, frecuencia, serie });
     const res = await axios.get(`${API_URL}/checklistItems/validar`, {
-      params: { oficina, fecha, frecuencia, serie },
+      params: { idEquipoInstalado, fecha, frecuencia },
     });
-    return res.data; // si todo ok
+    return res.data;
   } catch (error) {
-    // 👇 si backend devolvió 400, entramos acá
     throw new Error(error.response?.data?.error || "❌ Preventivo ya cargado");
   }
 }

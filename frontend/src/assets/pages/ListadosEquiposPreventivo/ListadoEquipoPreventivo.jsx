@@ -38,10 +38,9 @@ function ListadoEquipoPreventivo() {
 
       // Validar duplicados
       await validarPreventivo(
-        equipo.oficina,
+        equipo.idEquipoInstalado,
         fechaSeleccionada,
         tipo,
-        equipo.serie
       );
 
       // Checklist según frecuencia calculada
@@ -49,11 +48,9 @@ function ListadoEquipoPreventivo() {
 
       setEquipoSeleccionado({
         ...equipo,
-        equipoId: equipo.idEquipoInstalado,
         checklistItems,
         yearPreventivo: year,
         frecuencia: tipo,
-        serie: equipo.serie,
       });
 
       setModalVisible(true);
@@ -152,7 +149,7 @@ function ListadoEquipoPreventivo() {
                 <option value="">Tipo de Equipos</option>
                 {[
                   ...new Set(
-                    equipos.map((e) => e.equipo?.tipoEquipo?.tipoEquipo)
+                    equipos.map((e) => e.equipo?.tipoEquipo?.tipoEquipo),
                   ),
                 ]
                   .filter(Boolean)
@@ -207,7 +204,7 @@ function ListadoEquipoPreventivo() {
                         rolId={rolId}
                         onPreventivo={handlePreventivo}
                       />
-                    )
+                    ),
                 )
               ) : (
                 <tr>

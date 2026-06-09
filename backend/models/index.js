@@ -125,10 +125,10 @@ Usuario.hasMany(ObservacionesReparaciones, {
 });
 
 // 🔗 Chequeo - Relaciones
-Chequeo.belongsTo(Equipo, { foreignKey: "equipoId", as: "equipo" });
-Chequeo.belongsTo(Usuario, { foreignKey: "usuarioId", as: "tecnico" });
 
-Equipo.hasMany(Chequeo, { foreignKey: "equipoId", as: "chequeos" });
+Chequeo.belongsTo(Usuario, { foreignKey: "usuarioId", as: "tecnico" });
+Chequeo.belongsTo(EquipoInstalado, { foreignKey: "idEquipoInstalado", as: "equipoInstalado" });
+EquipoInstalado.hasMany(Chequeo, { foreignKey: "idEquipoInstalado", as: "chequeos" });
 Usuario.hasMany(Chequeo, { foreignKey: "usuarioId", as: "chequeosRealizados" });
 
 // 🔗 ChequeoDetalle - Relaciones
