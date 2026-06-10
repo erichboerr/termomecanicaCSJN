@@ -27,6 +27,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(helmet());
 
+app.use("/uploads", (req, res, next) => {
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+  next();
+});
+
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,
@@ -69,11 +74,13 @@ const ensureUploadDirs = () => {
 
 ensureUploadDirs();
 
+// 🖼️ Archivos estáticos
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+
 // 🚀 Rutas
 app.use(rutas);
 
-// 🖼️ Archivos estáticos
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 if (isProduction) {
   const frontendPath = path.join(__dirname, "..", "frontend", "dist");
