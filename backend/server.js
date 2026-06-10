@@ -25,8 +25,18 @@ const __dirname = path.dirname(__filename);
 // 🧠 Parsers
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(helmet());
-
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
+      styleSrc: ["'self'", "https:", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https://ui-avatars.com"],
+      fontSrc: ["'self'", "https:", "data:"],
+      connectSrc: ["'self'"],
+    },
+  },
+}));
 app.use("/uploads", (req, res, next) => {
   res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
   next();
