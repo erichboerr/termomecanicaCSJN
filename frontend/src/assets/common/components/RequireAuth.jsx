@@ -6,10 +6,9 @@ export function RequireAuth({ children }) {
   const location = useLocation();
 
   if (isLoading) return null;
-
   if (!isAuthenticated) {
-    return <Navigate to={`/Login?redirect=${location.pathname}`} replace />;
+    const redirect = encodeURIComponent(location.pathname + location.search);
+    return <Navigate to={`/Login?redirect=${redirect}`} replace />;
   }
-
   return children;
 }

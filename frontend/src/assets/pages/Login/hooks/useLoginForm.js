@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getCamposIncompletos } from "../helpers/validateForm";
 import { AuthContext } from "../../../../context/AuthContext";
@@ -10,6 +11,7 @@ export function useLoginForm(setModal) {
   const [formData, setFormData] = useState({ user: "", password: "" });
   const [showToast, setShowToast] = useState(false);
   const { setAuthState } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,27 +22,30 @@ export function useLoginForm(setModal) {
     e.preventDefault();
 
     const camposIncompletos = getCamposIncompletos(formData);
-
     if (camposIncompletos.length > 0) {
       setModal({
         message: `Faltan completar: ${camposIncompletos.join(", ")}`,
         type: "error",
       });
-
       return;
     }
 
     try {
-      const { data } = await axios.post(`${API_URL}/login`, formData); 
+      const { data } = await axios.post(`${API_URL}/login`, formData);
 
       if (data.success) {
         sessionStorage.setItem("token", data.token);
-        sessionStorage.setItem("usuario", data.usuario);       
+        sessionStorage.setItem("usuario", data.usuario);
         sessionStorage.setItem("rolId", data.rolId);
-        sessionStorage.setItem("userId", data.userId);        
-        sessionStorage.setItem("expiresAt", Date.now() + 1000 * 60 * 60 * 4); // 4 horas
-        revalidateAuth(setAuthState); 
-        setShowToast(true);                
+        sessionStorage.setItem("userId", data.userId);
+        sessionStorage.setItem("expiresAt", Date.now() + 1000 * 60 * 60 * 4);
+        revalidateAuth(setAuthState);
+        setShowToast(true);
+
+        // ✅ redirigir al redirect original si existe
+        const params = new URLSearchParams(window.location.search);
+        const redirect = params.get("redirect");
+        navigate(redirect ? decodeURIComponent(redirect) : "/ListadoEquipos");
       } else {
         setModal({
           message: data.message || "Usuario o contraseña incorrectos",

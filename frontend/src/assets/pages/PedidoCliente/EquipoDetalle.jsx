@@ -1,7 +1,9 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axiosInstance from "../../../utils/axiosInstance.js";
+import axios from "axios";
+import { backendUrl } from "../../../config/env.js";
 import EquipoCard from "../../common/modals/EquipoCard";
+
 function EquipoDetalle() {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
@@ -10,9 +12,8 @@ function EquipoDetalle() {
 
   useEffect(() => {
     if (!id) return;
-
-    axiosInstance
-      .get(`/equipoDetalle/${id}`)
+    axios
+      .get(`${backendUrl}/equipoDetalle/${id}`)
       .then((res) => setEquipo(res.data))
       .catch(() => setError("No se encontró el equipo o hubo un error"));
   }, [id]);
@@ -42,22 +43,11 @@ function EquipoDetalle() {
               Pedido de Revisión
             </button>
           </p>
-
           <div style={{ minHeight: "120px" }}>
-            <div
-              className="collapse collapse-horizontal"
-              id="collapseWidthExample"
-            >
-              <div
-                className="card card-body"
-                style={{ width: "200px", height: "150px" }}
-              >
-                <p>
-                  <i className="bi bi-telephone-fill mt-1"></i> 1143704706
-                </p>
-                <p>
-                  <i className="bi bi-envelope-fill"> doperativo@csjn.gov.ar</i>
-                </p>
+            <div className="collapse collapse-horizontal" id="collapseWidthExample">
+              <div className="card card-body" style={{ width: "200px", height: "150px" }}>
+                <p><i className="bi bi-telephone-fill mt-1"></i> 1143704706</p>
+                <p><i className="bi bi-envelope-fill"> doperativo@csjn.gov.ar</i></p>
               </div>
             </div>
           </div>
