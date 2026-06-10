@@ -74,17 +74,21 @@ const ensureUploadDirs = () => {
 
 ensureUploadDirs();
 
-// 🖼️ Archivos estáticos
+// 🖼️ Archivos estáticos uploads
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-
-// 🚀 Rutas
-app.use(rutas);
-
-
+// ✅ Frontend estático ANTES de las rutas API
 if (isProduction) {
   const frontendPath = path.join(__dirname, "..", "frontend", "dist");
   app.use(express.static(frontendPath));
+}
+
+// 🚀 Rutas API
+app.use(rutas);
+
+// ✅ Fallback React Router DESPUÉS de las rutas API
+if (isProduction) {
+  const frontendPath = path.join(__dirname, "..", "frontend", "dist");
   app.get("/:splat*", (req, res) => {
     try {
       res.sendFile(path.join(frontendPath, "index.html"));
