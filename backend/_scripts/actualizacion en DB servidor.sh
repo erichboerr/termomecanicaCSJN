@@ -4,3 +4,5 @@ sudo -u postgres psql -d sch_termodinamicacsjn -c "UPDATE usuarios SET usuario =
 
 #verificar
 sudo -u postgres psql -d sch_termodinamicacsjn -c "SELECT \"idRol\", rol FROM roles;"
+
+
