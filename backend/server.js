@@ -25,6 +25,8 @@ const __dirname = path.dirname(__filename);
 // 🧠 Parsers
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// 🛡️ Seguridad
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -33,10 +35,12 @@ app.use(helmet({
       styleSrc: ["'self'", "https:", "'unsafe-inline'"],
       imgSrc: ["'self'", "data:", "https://ui-avatars.com"],
       fontSrc: ["'self'", "https:", "data:"],
-      connectSrc: ["'self'"],
+      connectSrc: ["'self'", "https://cdn.jsdelivr.net"],
     },
   },
 }));
+
+// 🖼️ Archivos estáticos uploads
 app.use("/uploads", (req, res, next) => {
   res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
   next();
