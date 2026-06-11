@@ -99,13 +99,8 @@ app.use(rutas);
 // ✅ Fallback React Router DESPUÉS de las rutas API
 if (isProduction) {
   const frontendPath = path.join(__dirname, "..", "frontend", "dist");
-  app.get("/:splat*", (req, res) => {
-    try {
-      res.sendFile(path.join(frontendPath, "index.html"));
-    } catch (err) {
-      console.error("❌ Error al servir index.html:", err.message);
-      res.status(500).send("Error interno al cargar la aplicación.");
-    }
+  app.use((req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
 
