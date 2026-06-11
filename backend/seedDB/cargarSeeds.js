@@ -47,7 +47,7 @@ const seedRoles = async () => {
   const roles = [
     "Administrador",
     "Supervisor Teknik",
-    "Supervisor CSJN",
+    "Supervisor Palacio",
     "Técnico",
     "Cliente",
     "Preventivo",
@@ -67,7 +67,7 @@ const seedCapacidades = async () => {
 };
 
 const seedLocaciones = async () => {
-  const locaciones = ["CSJN"];
+  const locaciones = ["CSJN", "AV. INMIGRANTES"];
   for (const locacion of locaciones) {
     await Locacion.findOrCreate({ where: { locacion } });
   }
@@ -97,7 +97,7 @@ const seedUsuario = async () => {
       idRol: 2,
     },
     {
-      usuario: "Supervisor CSJN",
+      usuario: "Supervisor Palacio",
       password: "$2b$10$SATOh3YR6PrS5lVrsrZhEerg9jTSdnlTJOcwvJZ/Vo36e3FRFSQVK",
       flagHabilitado: true,
       idRol: 3,

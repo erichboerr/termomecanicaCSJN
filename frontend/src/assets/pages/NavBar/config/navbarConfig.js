@@ -141,7 +141,7 @@ export const NAVBAR_ITEMS = {
       },
     ],
   },
-  supervisorCSJN: {
+  supervisorPalacio: {
     Equipos: [
       {
         label: "Listado de Equipos",
