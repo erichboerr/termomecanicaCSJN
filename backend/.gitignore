@@ -14,7 +14,6 @@
 .DS_Store
 .env
 .env.production
-.env.production.hostinger
 
 
 npm-debug.log*

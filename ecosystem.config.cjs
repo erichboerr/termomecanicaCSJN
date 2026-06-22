@@ -8,19 +8,23 @@ module.exports = {
       env_production: {
         NODE_ENV: "production",
         PORT: 5050,
-        DATABASE_URL:
-          "postgres://imgsoluciones:Ifts%40Erich@localhost:5432/sch_termodinamicacsjn",
-        DB_HOST: "localhost",
-        DB_PORT: "5432",
-        DB_NAME: "sch_termodinamicacsjn",
-        DB_USER: "imgsoluciones",
-        DB_PASSWORD: "Ifts@Erich",
+
+        // 🔑 Variables críticas (se leen del entorno)
+        DATABASE_URL: process.env.DATABASE_URL,
+        DB_HOST: process.env.DB_HOST,
+        DB_PORT: process.env.DB_PORT,
+        DB_NAME: process.env.DB_NAME,
+        DB_USER: process.env.DB_USER,
+        DB_PASSWORD: process.env.DB_PASSWORD,
         DB_DIALECT: "postgres",
         DB_SSL: "true",
-        JWT_SECRET: "tu-clave-secreta",
-        BACKEND_URL: "https://termomecanicacsjn.com",
-        FRONTEND_URL: "https://termomecanicacsjn.com",
-        DB_SEED: "false",
+
+        // 🔒 Seguridad y configuración
+        JWT_SECRET: process.env.JWT_SECRET,
+        BACKEND_URL: process.env.BACKEND_URL,
+        FRONTEND_URL: process.env.FRONTEND_URL,
+        DB_SEED: process.env.DB_SEED || "false",
+        DB_SYNC: process.env.DB_SYNC || "false",
       },
     },
   ],
