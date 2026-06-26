@@ -112,7 +112,6 @@ if (isProduction) {
 app.listen(PORT, "0.0.0.0", async () => {
   console.log(`🚀 Servidor corriendo en el puerto: ${PORT}`);
   console.log(`🧪 Entorno activo: ${process.env.NODE_ENV}`);
-  console.log("🔗 DB:", process.env.DATABASE_URL);
   console.log("🌐 Backend:", process.env.BACKEND_URL);
 
   try {
@@ -128,8 +127,6 @@ app.listen(PORT, "0.0.0.0", async () => {
       await seedChecklistItems();
       console.log("🌱 seeders cargados");
     }
-
-    console.log("🌱 Seeds iniciales cargados");
   } catch (err) {
     console.error("❌ Error con la base de datos:", err.message);
   }
