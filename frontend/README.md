@@ -306,7 +306,7 @@ Incluye encabezado con fecha de exportación, autofilter y anchos de columna con
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/erichboerr/termomecanicaCSJN.git
+git clone https://github.com/tuUsuario/termomecanicaCSJN.git
 cd termomecanicaCSJN/frontend
 
 # 2. Instalar dependencias
